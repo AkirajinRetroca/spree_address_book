@@ -1,7 +1,7 @@
 class Spree::AddressesController < Spree::StoreController
-  helper Spree::AddressesHelper
-  rescue_from ActiveRecord::RecordNotFound, with: :render_404
-  load_and_authorize_resource class: Spree::Address
+  #helper Spree::AddressesHelper
+  #rescue_from ActiveRecord::RecordNotFound, with: :render_404
+  #:load_and_authorize_resource class: Spree::Address
 
   def index
     @addresses = spree_current_user.addresses
