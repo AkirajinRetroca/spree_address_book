@@ -1,9 +1,12 @@
 (Spree::PermittedAttributes.class_variable_get("@@address_attributes") << [
-  :user_id, :deleted_at
+  :user_id, :deleted_at, :address_type
 ]).flatten!
 
 Spree::Address.class_eval do
-  belongs_to :user, :class_name => Spree.user_class.to_s
+  belongs_to :user, :class_name => Spree.user_class.to_s 
+
+
+
 
   def self.required_fields
     Spree::Address.validators.map do |v|
@@ -20,11 +23,17 @@ Spree::Address.class_eval do
   
   # can modify an address if it's not been used in an completed order
   def editable?
-    new_record? || (shipments.empty? && Spree::Order.complete.where("bill_address_id = ? OR ship_address_id = ?", self.id, self.id).count == 0)
+    true
+    #TODO new_record? || (shipments.empty? && Spree::Order.complete.where("bill_address_id = ? OR ship_address_id = ?", self.id, self.id).count == 0)
   end
 
   def can_be_deleted?
-    shipments.empty? && Spree::Order.where("bill_address_id = ? OR ship_address_id = ?", self.id, self.id).count == 0
+    true
+    #TODO shipments.empty? && Spree::Order.where("bill_address_id = ? OR ship_address_id = ?", self.id, self.id).count == 0
+  end
+
+  def readonly?
+    !deleted_at.nil?
   end
 
   def to_s

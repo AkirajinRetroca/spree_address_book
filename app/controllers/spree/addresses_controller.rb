@@ -1,7 +1,7 @@
 class Spree::AddressesController < Spree::StoreController
-  #helper Spree::AddressesHelper
-  #rescue_from ActiveRecord::RecordNotFound, with: :render_404
-  #:load_and_authorize_resource class: Spree::Address
+   helper Spree::AddressesHelper
+   rescue_from ActiveRecord::RecordNotFound, with: :render_404
+  load_and_authorize_resource class: Spree::Address
 
   def index
     @addresses = spree_current_user.addresses
@@ -25,9 +25,14 @@ class Spree::AddressesController < Spree::StoreController
     session['spree_user_return_to'] = request.env['HTTP_REFERER']
   end
 
-  def new
-    @address = Spree::Address.default
-  end
+    def new   
+      @address = Spree::Address.new
+      @country = Spree::Country.find(32)
+
+      @type = params[:type] || "shipping"
+
+      @address.country_id = @country.id
+    end
 
   def update
     if @address.editable?
@@ -50,8 +55,10 @@ class Spree::AddressesController < Spree::StoreController
     end
   end
 
+
+
   def destroy
-    @address.destroy
+    @address.destroy 
 
     flash[:notice] = I18n.t(:successfully_removed, scope: :address_book)
     redirect_to(request.env['HTTP_REFERER'] || account_path) unless request.xhr?
@@ -68,7 +75,8 @@ class Spree::AddressesController < Spree::StoreController
                               :state_id,
                               :zipcode,
                               :country_id,
-                              :phone
+                              :phone,
+                              :address_type
                              )
     end
 end
