@@ -15,6 +15,7 @@
   <% else %>
     <% next if field == "company" && !Spree::Config[:company] %>
     <% next if field == "alternative_#{address_id}_phone" && !Spree::Config["alternative_#{address_id}_phone"] %>
+    <% next if (field == "cpf" || field == "birth_date") && address_type == 'shipping' %>
     <%= address_field(address_form, field.to_sym, address_id) %>
   <% end %>
 <% end %>

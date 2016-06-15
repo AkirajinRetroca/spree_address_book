@@ -1,11 +1,16 @@
 (Spree::PermittedAttributes.class_variable_get("@@address_attributes") << [
-  :user_id, :deleted_at, :address_type
+  :user_id, :deleted_at, :address_type, :cpf, :birth_date
 ]).flatten!
 
 Spree::Address.class_eval do
   belongs_to :user, :class_name => Spree.user_class.to_s 
 
-
+  validates :firstname, :lastname, :city, :address1, :phone, :zipcode, :presence => true
+  validates_presence_of :cpf, :birth_date, :unless => Proc.new { |address| address.address_type == "shipping" }
+  validates_length_of :address2, :maximum => 40
+  validates_length_of :address1, :maximum => 80
+  validates_length_of :city, :in => 2..60
+  validates_numericality_of :phone, :zipcode
 
 
   def self.required_fields

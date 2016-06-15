@@ -76,7 +76,9 @@ class Spree::AddressesController < Spree::StoreController
                               :zipcode,
                               :country_id,
                               :phone,
-                              :address_type
+                              :address_type,
+                              :cpf,
+                              :birth_date
                              )
     end
 end

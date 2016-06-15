@@ -3,7 +3,6 @@
     <table id='user_addresses' class="table table-striped">
       <tbody>
         <% spree_current_user.addresses.where(address_type: type).each do |address| %>
-
           <tr>
             <td><%= address.to_s.gsub("<br/>", ", ") %></td>
               <td>
